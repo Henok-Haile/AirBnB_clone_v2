@@ -3,8 +3,9 @@
 # and distributes an archive to your web servers, using the function deploy
 
 import os
-from fabric.api import run, env, put
+from fabric.api import local, run, env, put
 import time
+
 env.hosts = ["100.25.164.254", "34.203.201.252"]
 
 
