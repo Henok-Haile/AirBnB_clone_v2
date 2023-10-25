@@ -1,10 +1,10 @@
 #!/usr/bin/python3
-""" A script that starts a Flask web application.
+"""Starts a Flask web application.
 
-web application must be listening on 0.0.0.0, port 5000
+The application listens on 0.0.0.0, port 5000.
 Routes:
-	/: display "Hello HBNB!"
-	/hbnb: display "HBNB"
+    /: Displays 'Hello HBNB!'.
+    /hbnb: Displays 'HBNB'.
 """
 
 from flask import Flask
