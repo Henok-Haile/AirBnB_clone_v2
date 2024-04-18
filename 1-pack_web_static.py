@@ -15,8 +15,7 @@ def do_pack():
         local("tar -cvzf versions/web_static_{}.tgz web_static/".format(now))
         file_size = os.path.getsize("versions/web_static_{}.tgz".format(now))
         print(f"web_static packed: versions/web_static_{now}.tgz -> {file_size}Bytes")
-        return ("versions/web_static_{}.tgz".format(time.
-                strftime("%Y%m%d%H%M%S")))
+        return ("versions/web_static_{}.tgz".format(now))
     except:
         return None
         
