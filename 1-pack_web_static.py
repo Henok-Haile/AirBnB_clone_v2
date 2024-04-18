@@ -6,6 +6,7 @@ from fabric.api import local
 from datetime import datetime
 import os
 
+
 def do_pack():
     """Creates a tar gziiped archive of the folder of the web_static."""
     try:
