@@ -22,10 +22,9 @@ def do_pack():
         local("tar -cvzf {} web_static".format(file_name))
 
         # Get the file size
-        #file_size = os.path.getsize(file_name)
+        file_size = os.path.getsize(file_name)
 
-        #print(f"web_static packed: {file_name} -> {file_size}Bytes")
+        print(f"web_static packed: {file_name} -> {file_size}Bytes")
         return file_name
     except:
         return None
-
