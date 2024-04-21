@@ -16,33 +16,22 @@ def do_deploy(archive_path):
     Returns:
         False if the file at the path archive_path doesn’t exist else True.
     """
-    if os.path.isfile(archive_path) is False:
+    if os.path.exists(archive_path) is False:
         return False
-    file = archive_path.split("/")[-1]
-    name = file.split(".")[0]
 
-    if put(archive_path, "/tmp/{}".format(file)).failed is True:
-        return False
-    if run("sudo rm -rf /data/web_static/releases/{}/".
-           format(name)).failed is True:
-        return False
-    if run("sudo mkdir -p /data/web_static/releases/{}/".
-           format(name)).failed is True:
-        return False
-    if run("sudo tar -xzf /tmp/{} -C /data/web_static/releases/{}/".
-           format(file, name)).failed is True:
-        return False
-    if run("sudo rm /tmp/{}".format(file)).failed is True:
-        return False
-    if run("sudo mv /data/web_static/releases/{}/web_static/* "
-           "/data/web_static/releases/{}/".format(name, name)).failed is True:
-        return False
-    if run("sudo rm -rf /data/web_static/releases/{}/web_static".
-           format(name)).failed is True:
-        return False
-    if run("sudo rm -rf /data/web_static/current").failed is True:
-        return False
-    if run("sudo ln -s /data/web_static/releases/{}/ /data/web_static/current".
-           format(name)).failed is True:
-        return False
-    return True
+    try:
+        archive = archive_path.split("/")[-1]
+        archive_name = archive.split(".")[0]
+        path = "/data/web_static/releases/"
+
+        put(archive_path, '/tmp/')
+        run('mkdir -p {}{}'.format(path, archive_name))
+        run('tar -xzf /tmp/{} -C {}{}'.format(archive, path, archive_name))
+        run('rm /tmp/{}'.format(archive))
+        run('mv {0}{1}/web_static/* {0}{1}/'.format(path, archive_name))
+        run('rm -rf {}{}/web_static'.format(path, archive_name))
+        run('rm -rf /data/web_stattic/current')
+        run('ln -s {}{}/ /data/web_static/current'.format(path, archive_name))
+        return True
+    except:
+        return false
