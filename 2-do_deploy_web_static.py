@@ -8,8 +8,8 @@ from datetime import datetime
 import os
 
 env.hosts = ["54.198.54.29", "54.165.42.234"]
-env.user = "ubuntu"
-env.key_filename = "~/.ssh/id_rsa"
+#env.user = "ubuntu"
+#env.key_filename = "~/.ssh/id_rsa"
 
 
 def do_deploy(archive_path):
