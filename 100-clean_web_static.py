@@ -9,7 +9,7 @@ usage: fab -f 100-clean_web_static.py do_clean:number=2
 import os
 from fabric.api import *
 
-env.hosts = ['54.198.54.29', '54.165.42.234']
+env.hosts = ['100.25.47.158', '35.153.193.110']
 
 
 def do_clean(number=0):
