@@ -5,50 +5,27 @@ archive to the web servers
 """
 
 from fabric.api import put, run, env
-from os import path
+import os
 env.hosts = ['100.25.47.158', '35.153.193.110']
 
 
 def do_deploy(archive_path):
-        """Deploy web files to server
-        """
-        try:
-                if not (path.exists(archive_path)):
-                        return False
-
-                # upload archive
-                put(archive_path, '/tmp/')
-
-                # create target dir
-                timestamp = archive_path[-18:-4]
-                run('sudo mkdir -p /data/web_static/\
-releases/web_static_{}/'.format(timestamp))
-
-                # uncompress archive and delete .tgz
-                run('sudo tar -xzf /tmp/web_static_{}.tgz -C \
-/data/web_static/releases/web_static_{}/'
-                    .format(timestamp, timestamp))
-
-                # remove archive
-                run('sudo rm /tmp/web_static_{}.tgz'.format(timestamp))
-
-                # move contents into host web_static
-                run('sudo mv /data/web_static/releases/web_static_{}/web_static/* \
-/data/web_static/releases/web_static_{}/'.format(timestamp, timestamp))
-
-                # remove extraneous web_static dir
-                run('sudo rm -rf /data/web_static/releases/\
-web_static_{}/web_static'
-                    .format(timestamp))
-
-                # delete pre-existing sym link
-                run('sudo rm -rf /data/web_static/current')
-
-                # re-establish symbolic link
-                run('sudo ln -s /data/web_static/releases/\
-web_static_{}/ /data/web_static/current'.format(timestamp))
-        except:
-                return False
-
-        # return True on success
+    """distributes an archive to the web servers"""
+    if os.path.exists(archive_path) is False:
+        return False
+    try:
+        file_nm = archive_path.split("/")[-1]
+        arc_nm = file_nm.split(".")[0]
+        path = "/data/web_static/releases/"
+        put(archive_path, '/tmp/')
+        run('mkdir -p {}{}/'.format(path, arc_nm))
+        run('tar -xzf /tmp/{} -C {}{}/'.format(file_nm, path, arc_nm))
+        run('rm /tmp/{}'.format(file_nm))
+        run('mv {0}{1}/web_static/* {0}{1}/'.format(path, arc_nm))
+        run('rm -rf {}{}/web_static'.format(path, arc_nm))
+        run('rm -rf /data/web_static/current')
+        run('ln -s {}{}/ /data/web_static/current'.format(path, arc_nm))
+        print("New version deployed!")
         return True
+    except:
+        return False
